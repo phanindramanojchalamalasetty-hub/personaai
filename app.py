@@ -4,8 +4,9 @@ import requests
 app = Flask(__name__)
 
 # 👉 PASTE YOUR OPENROUTER API KEY HERE
-API_KEY = "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"
+import os
 
+API_KEY = os.getenv("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")
 def get_ai_response(user_input):
     try:
         response = requests.post(
