@@ -62,14 +62,17 @@ def home():
 def chat():
     user_message = request.json.get("message")
 
-    # 🔥 SMART DETECTION FOR LIVE QUESTIONS
     keywords = ["current", "latest", "now", "today", "news"]
 
+    # Try live data first if keyword matches
     if any(word in user_message.lower() for word in keywords):
         live_answer = get_live_data(user_message)
-        return jsonify({"response": live_answer})
 
-    # Otherwise use AI
+        # ✅ FALLBACK FIX
+        if "⚠️" not in live_answer:
+            return jsonify({"response": live_answer})
+
+    # 🔥 ALWAYS fallback to AI if live fails
     reply = get_ai_response(user_message)
     return jsonify({"response": reply})
 
