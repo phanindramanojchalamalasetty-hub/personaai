@@ -10,25 +10,25 @@ API_KEY = os.getenv("OPENROUTER_API_KEY")
 def get_ai_response(user_input):
     try:
         response = requests.post(
-            "https://openrouter.ai/api/v1/chat/completions",
-            headers={
-                "Authorization": f"Bearer {API_KEY}",
-                "Content-Type": "application/json"
+    "https://openrouter.ai/api/v1/chat/completions",
+    headers={
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json"
+    },
+    json={
+        "model": "openai/gpt-4o-mini",
+        "messages": [
+            {
+                "role": "system",
+                "content": "You are a smart, up-to-date AI assistant."
             },
-            json={
-    "model": "openai/gpt-4o-mini",   # ✅ UPDATED MODEL
-    "messages": [
-        {
-            "role": "system",
-            "content": "You are a smart, up-to-date AI assistant. Always give the latest accurate information."
-        },
-        {
-            "role": "user",
-            "content": user_input
-        }
-    ]
-}
-
+            {
+                "role": "user",
+                "content": user_input
+            }
+        ]
+    }
+)
         # Debug (optional)
         print("STATUS:", response.status_code)
         print("RESPONSE TEXT:", response.text)
