@@ -6,7 +6,7 @@ app = Flask(__name__)
 # 👉 PASTE YOUR OPENROUTER API KEY HERE
 import os
 
-API_KEY = os.getenv("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")
+API_KEY = os.getenv("open router key here")
 def get_ai_response(user_input):
     try:
         response = requests.post(
