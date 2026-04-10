@@ -85,7 +85,7 @@ def home():
 
 @app.route("/api/chat", methods=["POST"])
 def chat():
-    print("🔥 NEW VERSION RUNNING")   # ✅ DEBUG LINE
+    print("🔥 VERSION 2 LIVE")   # ✅ DEBUG LINE
 
    
     user_message = request.json.get("message")
