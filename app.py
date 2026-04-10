@@ -27,7 +27,16 @@ def get_news(query):
 # 🌐 FACTUAL LIVE DATA (Wikipedia)
 def get_fact(query):
     try:
-        url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{query.replace(' ', '_')}"
+        # 🔥 Improve query for Wikipedia
+        search_query = query.lower()
+
+        if "deputy chief minister" in search_query:
+            search_query = "Deputy Chief Minister of Andhra Pradesh"
+
+        elif "chief minister" in search_query:
+            search_query = "Chief Minister of Andhra Pradesh"
+
+        url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{search_query.replace(' ', '_')}"
         res = requests.get(url).json()
 
         if "extract" in res:
@@ -36,7 +45,6 @@ def get_fact(query):
             return None
     except:
         return None
-
 # 🤖 AI fallback
 def get_ai_response(user_input):
     try:
@@ -88,7 +96,7 @@ def chat():
             return jsonify({"response": news})
 
     # 🔥 FACT queries
-    if any(word in msg for word in ["who is", "current", "present"]):
+    if any(word in msg for word in ["who is", "current", "present", "cm", "minister"]):
         fact = get_fact(user_message)
         if fact:
             return jsonify({"response": fact})
