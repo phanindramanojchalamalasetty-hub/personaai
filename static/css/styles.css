@@ -44,6 +44,24 @@ body {
     margin-bottom: 10px;
 }
 
+/* 🔥 USER MESSAGE (LEFT) */
+.message.user {
+    text-align: left;
+    background: #334155;
+    padding: 8px;
+    border-radius: 6px;
+    margin-bottom: 10px; /* 1 line gap to answer */
+}
+
+/* 🔥 BOT MESSAGE */
+.message.bot {
+    text-align: left;
+    background: #1e293b;
+    padding: 8px;
+    border-radius: 6px;
+    margin-bottom: 20px; /* 2 lines gap to next question */
+}
+
 /* INPUT AREA */
 input {
     width: 70%;

@@ -5,8 +5,9 @@ async function sendMessage() {
 
     if (!message) return;
 
-    // Show user message
+    // USER MESSAGE (LEFT)
     chatBox.innerHTML += `<div class="message user">${message}</div>`;
+
     input.value = "";
 
     try {
@@ -20,16 +21,18 @@ async function sendMessage() {
 
         const data = await response.json();
 
-        // Show bot response
+        // AI RESPONSE
         chatBox.innerHTML += `<div class="message bot">${data.response}</div>`;
+
     } catch (error) {
         chatBox.innerHTML += `<div class="message bot">Error connecting to server</div>`;
     }
 
+    // Auto scroll
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// Press Enter to send message
+// ENTER KEY SUPPORT
 document.getElementById("user-input").addEventListener("keypress", function(e) {
     if (e.key === "Enter") {
         sendMessage();
