@@ -27,22 +27,19 @@ def get_news(query):
 # 🌐 FACTUAL LIVE DATA (Wikipedia)
 def get_fact(query):
     try:
-        # 🔥 Improve query for Wikipedia
-        search_query = query.lower()
+        url = "https://api.bing.microsoft.com/v7.0/search"
+        headers = {"Ocp-Apim-Subscription-Key": os.getenv("BING_API_KEY")}
+        params = {"q": query, "count": 1, "mkt": "en-IN"}
 
-        if "deputy chief minister" in search_query:
-            search_query = "Deputy Chief Minister of Andhra Pradesh"
+        res = requests.get(url, headers=headers, params=params).json()
 
-        elif "chief minister" in search_query:
-            search_query = "Chief Minister of Andhra Pradesh"
-
-        url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{search_query.replace(' ', '_')}"
-        res = requests.get(url).json()
-
-        if "extract" in res:
-            return res["extract"]
+        if "webPages" in res and len(res["webPages"]["value"]) > 0:
+            result = res["webPages"]["value"][0]
+            return f"{result['name']} — {result['snippet']}"
         else:
             return None
+    except Exception as e:
+        return None
     except:
         return None
 # 🤖 AI fallback
@@ -85,25 +82,24 @@ def home():
 
 @app.route("/api/chat", methods=["POST"])
 def chat():
-    print("🔥 VERSION 2 LIVE")   # ✅ DEBUG LINE
-
-   
     user_message = request.json.get("message")
-
     msg = user_message.lower()
 
-    # 🔥 NEWS queries
-    if any(word in msg for word in ["news", "latest news", "breaking"]):
-        news = get_news(user_message)
+    # 🔥 NEWS
+    if any(word in msg for word in ["news", "latest", "breaking"]):
+        news = get_live_data(user_message)
         if news:
             return jsonify({"response": news})
 
-    # 🔥 FACT queries
+    # 🔥 FACT (VERY IMPORTANT)
     if any(word in msg for word in ["who is", "current", "present", "cm", "minister"]):
         fact = get_fact(user_message)
         if fact:
             return jsonify({"response": fact})
 
+    # 🤖 fallback AI
+    reply = get_ai_response(user_message)
+    return jsonify({"response": reply})
     # 🤖 fallback
     reply = get_ai_response(user_message)
     return jsonify({"response": reply})
